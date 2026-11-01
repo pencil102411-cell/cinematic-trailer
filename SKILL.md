@@ -135,7 +135,7 @@ compatibility: 脚本为 Python 3.10+，依赖 ffmpeg/ffprobe 在 PATH，pip 包
 
 ## 脚本速查
 
-脚本在本 skill 的 `scripts/` 下（加载 skill 时会显示目录）。Windows 上用户的 Python 在 `C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe`（`python` 命令可能指向应用商店占位符），已装好 numpy、opencv、scipy、pillow。
+脚本在本 skill 的 `scripts/` 下（加载 skill 时会显示目录）。先确认有可用的 Python 3.10+：Windows 上 `python` 命令可能指向应用商店占位符，这时改用 `py -3` 或 Python 安装目录下 `python.exe` 的完整路径。缺包就装：`pip install numpy opencv-python scipy pillow`。
 
 | 脚本 | 用途 | 用法 |
 |---|---|---|
@@ -146,6 +146,6 @@ compatibility: 脚本为 Python 3.10+，依赖 ffmpeg/ffprobe 在 PATH，pip 包
 
 分镜表的列和转场写法见 animatic.py 文件头。叠化发生在这一镜开始前（占用上一镜的尾巴），总时长不变。时长可以写秒（0.5）或帧（6f）。
 
-性能参考（本机）：analyze_trailer 拆 86 秒的片约 30 秒；title_card 1080p 约每帧 0.25 秒；animatic 十几个镜头约 40 秒。
+性能参考（作者的 Windows 机器）：analyze_trailer 拆 86 秒的片约 30 秒；title_card 1080p 约每帧 0.25 秒；animatic 十几个镜头约 40 秒。
 
 脚本出错时，先看报错里 ffmpeg 的最后几行；字体缺字（方块）就用 `--font`/`--sub-font` 换支持中文的字体。
