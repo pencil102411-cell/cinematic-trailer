@@ -1,0 +1,13 @@
+# 项目文件、出片和临时文件不入库
+/output/
+/outputs/
+/输出/
+/tmp/
+/work/
+
+.env
+.env.*
+__pycache__/
+*.py[cod]
+Thumbs.db
+.DS_Store
