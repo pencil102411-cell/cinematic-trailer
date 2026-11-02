@@ -11,3 +11,6 @@ __pycache__/
 *.py[cod]
 Thumbs.db
 .DS_Store
+
+# 本机专用：工作站地址、本机路径，只留在本地
+references/本机工具链.md

@@ -15,8 +15,11 @@
 | 分镜表 | 逐镜时长、景别、运镜、画面、转场、字卡、字幕、声音，CSV 可直接喂给 animatic 脚本 |
 | 配乐 | Suno 出版与选版、按小节剪长度、打点、按拍改镜头时长 |
 | 图像素材 | 素材清单、设定卡与关键帧方案（MJ / GPT-image-2） |
-| 视频素材 | 生成清单与 Seedance 2.5 / MiniMax H3 提示词，每条写清成片取段 |
-| animatic 与粗剪 | 分镜表一键出片：图片缓推、视频按入点截取、占位卡、字卡、转场、字幕、遮幅、配乐混音 |
+| 视频素材 | 生成清单与 Seedance 2.5 / MiniMax H3 提示词，每条写清成片取段；制作级别 L1–L4（能剪辑、能静图做的不生成视频）、跑法选择、避坑清单 |
+| 生成以后 | 小测、看片、挑种子、按动作实际时间找入点、挑片结果记录、按镜号逐刀返修（剪辑 / 重跑 / 重出图 / 换模型，先做不花钱的） |
+| animatic 与粗剪 | 分镜表一键出片：图片缓推、视频按入点截取、占位卡、字卡、转场、黑闪 / 故障 / 冲推、字幕、遮幅、配乐混音；开剪前检查；镜头号版给返修用 |
+| 剪辑小工具 | 点名蒙太奇（越切越快、推镜残影）、频闪、冲推、甩镜、故障、口吃剪、截参考音频、逐帧检查图 |
+| 自查 | 蓝图评分表、分镜检查清单（含"用户看片最常挑的毛病"） |
 | 字卡与片名动效 | fade / slam / glitch / sweep / split 五种预设，可透明底导出叠进剪辑 |
 | 后期 | DaVinci 剪辑调色混音、AE / Remotion / Blender 字卡，响度与交付规格 |
 | 拆解参考片 | 镜头表、平均镜头长、分段节奏、运镜分布、声音事件、接触表和时间线图 |
@@ -101,8 +104,9 @@ pip install numpy opencv-python scipy pillow
 | --- | --- |
 | [scripts/analyze_trailer.py](scripts/analyze_trailer.py) | 拆解参考预告片：镜头表、ASL、分段节奏、运镜、闪白 / 黑场 / 叠化、响度 / 冲击 / 静音、接触表、时间线图 |
 | [scripts/music_markers.py](scripts/music_markers.py) | 配乐打点：BPM、拍、小节、冲击、静音、段落；导出 CSV、DaVinci 标记 EDL、AE 脚本、JSON、总览图 |
-| [scripts/animatic.py](scripts/animatic.py) | 分镜表 → animatic / 粗剪，同时导出 SRT 和带时间码的剪辑表 |
+| [scripts/animatic.py](scripts/animatic.py) | 分镜表 → animatic / 粗剪，同时导出 SRT 和带时间码的剪辑表；`--label` 出镜头号版，`--check` 只做开剪前检查，时长可以按拍写 |
 | [scripts/title_card.py](scripts/title_card.py) | 字卡动效：五种预设、纹理填字、背景图 / 视频、ProRes 4444 透明导出 |
+| [scripts/fx.py](scripts/fx.py) | 剪辑小工具：抽帧 / 逐帧检查图、点名蒙太奇（越切越快、推镜残影）、频闪、冲推、甩镜、故障、口吃剪、截参考音频 |
 
 每个脚本的参数、分镜表列名和转场写法见各自文件头；用法速查在 [SKILL.md](SKILL.md) 末尾。
 
@@ -116,13 +120,19 @@ pip install numpy opencv-python scipy pillow
 | [references/03-切点与转场.md](references/03-切点与转场.md) | 按声音下刀、转场库 |
 | [references/04-声音-配乐与配音.md](references/04-声音-配乐与配音.md) | 配乐、音效、台词、旁白四层与 Suno 用法 |
 | [references/05-文字与字幕动效.md](references/05-文字与字幕动效.md) | 字卡清单、片名、字幕与动效 |
-| [references/06-素材-图像.md](references/06-素材-图像.md) | 资产层级、设定卡与关键帧（MJ / GPT-image-2） |
-| [references/07-素材-视频.md](references/07-素材-视频.md) | Seedance 2.5 / MiniMax H3 生成方案与取段 |
-| [references/08-后期剪辑与合成.md](references/08-后期剪辑与合成.md) | 剪辑、合成、调色、混音、导出规格 |
+| [references/06-素材-图像.md](references/06-素材-图像.md) | 资产层级、设定卡与首帧图（MJ / GPT-image-2）、什么时候一张图就够 |
+| [references/07-素材-视频.md](references/07-素材-视频.md) | Seedance 2.5 / MiniMax H3 生成方案与取段、制作级别、"四个一"、跑法选择、锚点句、避坑清单 |
+| [references/08-后期剪辑与合成.md](references/08-后期剪辑与合成.md) | 剪辑、合成、调色、混音、导出规格、重新编码保画质、水印 |
 | [references/09-样片拆解.md](references/09-样片拆解.md) | 五支样片的数据总表和逐段拆解 |
-| [assets/预告片蓝图模板.md](assets/预告片蓝图模板.md) | 立项与蓝图模板 |
+| [references/10-生成以后.md](references/10-生成以后.md) | 小测、看片、挑种子、找入点、粗剪两版、按镜号逐刀返修 |
+| `references/本机工具链.md` | 可选的本机文件（已写进 .gitignore，不入库）：记你自己的工作站地址、画布命令行、超分和转写工具路径，skill 要真正跑东西时读 |
+| [assets/预告片蓝图模板.md](assets/预告片蓝图模板.md) | 立项与蓝图模板（含 AI 制作路线） |
 | [assets/分镜表模板.csv](assets/分镜表模板.csv) | 分镜表列定义，animatic.py 直接读 |
 | [assets/视频提示词模板.txt](assets/视频提示词模板.txt) | 视频提示词文件模板 |
+| [assets/挑片结果模板.md](assets/挑片结果模板.md) | 每批生成的挑片记录：用哪条、入点、为什么、毛病、返修意见 |
+| [assets/进度记录模板.md](assets/进度记录模板.md) | 项目进度记录：做到哪、每镜用哪条，新开对话接着做 |
+| [rubrics/蓝图评分.md](rubrics/蓝图评分.md) | 蓝图自评（满分 100） |
+| [rubrics/分镜检查清单.md](rubrics/分镜检查清单.md) | 分镜表和提示词交付前、每轮返修后的检查清单 |
 
 ## 验证边界
 
